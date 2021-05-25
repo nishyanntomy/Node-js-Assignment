@@ -45,7 +45,7 @@ EmpDept.belongsTo(Department, {
 sequelize
     .sync()
     .then(result => {
-        console.log('Connected');
+        console.log('Listening for requests at http://localhost:7001');
         app.listen(7001);
     })
     .catch(err => {

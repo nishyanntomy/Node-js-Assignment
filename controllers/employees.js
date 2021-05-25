@@ -61,6 +61,7 @@ exports.postEmployees = (req, resp, next) => {
     const emp_name = req.body.emp_name;
     const age = req.body.age;
     const is_active = req.body.is_active;
+    const dept_id = req.body.dept_id;
 
     // Create employee in db
     Employee.create({
