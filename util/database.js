@@ -1,10 +1,7 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+const { dbConfig } = require('../config/appConfig');
+const { username, password, database } = dbConfig.credentials;
 
-const sequelize = new Sequelize('company_db', '<db_username>', '<db_password>', {
-    host: 'localhost',
-    port: '5432',
-    dialect: 'postgres',
-    logging: false,
-});
+const sequelize = new Sequelize(database, username, password, dbConfig.env);
 
 module.exports = sequelize;

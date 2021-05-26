@@ -61,14 +61,12 @@ exports.postEmployees = (req, resp, next) => {
     const emp_name = req.body.emp_name;
     const age = req.body.age;
     const is_active = req.body.is_active;
-    const dept_id = req.body.dept_id;
 
     // Create employee in db
     Employee.create({
         emp_name: emp_name,
         age: age,
-        is_active: is_active,
-        dept_id: dept_id
+        is_active: is_active
     }).then(result => {
         // console.log(result);
         resp.status(201).json({
@@ -76,8 +74,7 @@ exports.postEmployees = (req, resp, next) => {
             employees: {
                 emp_name: emp_name,
                 age: age,
-                is_active: is_active,
-                dept_id: dept_id
+                is_active: is_active
             }
         });
     }).catch(err => {

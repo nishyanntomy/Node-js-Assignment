@@ -19,12 +19,9 @@ const Employee = sequelize.define('employee', {
     },
     is_active: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
-    },
-    // dept_id: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false
-    // }
+        allowNull: false,
+        defaultValue: true
+    }
 });
 
 module.exports = Employee;
