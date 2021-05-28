@@ -1,47 +1,52 @@
 require('./config/appConfig');
+
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const sequelize = require('./util/database');
+const { notFound, convertError } = require('./middleware/errorMiddleware')
 
 const Employee = require('./models/employees');
 const Department = require('./models/departments');
-const EmpDept = require('./models/employee_department');
+const EmpDept = require('./models/employeeDepartment');
 
 const empRoutes = require('./routes/employees');
 const depRoutes = require('./routes/departments');
 
+
+/**
+* Express instance
+* @public
+*/
 const app = express();
 
-app.use(bodyParser.json()); // application/json
+// parse body params and attaches them to req.body
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, resp, next) => {
-    resp.setHeader('Access-Control-Allow-Origin', '*');
-    resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-    resp.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-
+// API routes
 app.use('/employees', empRoutes);
 app.use('/departments', depRoutes);
 
-EmpDept.belongsTo(Employee, {
-    foreignKey: {
-        name: 'emp_id'
-    },
-    onDelete: 'CASCADE'
-});
+// Error Middlewares
+app.use(notFound);
+app.use(convertError);
 
 // Employee.hasMany(EmpDept);
-
-EmpDept.belongsTo(Department, {
+EmpDept.belongsTo(Employee, {
     foreignKey: {
-        name: 'dept_id'
+        name: 'empId'
     },
     onDelete: 'CASCADE'
 });
 
 // Department.hasMany(EmpDept);
+EmpDept.belongsTo(Department, {
+    foreignKey: {
+        name: 'deptId'
+    },
+    onDelete: 'CASCADE'
+});
+
 
 sequelize
     .sync()

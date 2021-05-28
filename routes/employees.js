@@ -1,6 +1,12 @@
 const express = require('express');
-
-const empController = require('../controllers/employees');
+const validate = require('express-validation');
+const empController = require('../controller/employees');
+const {
+  idParamsSchema,
+  postEmployeeBodySchema,
+  editEmployeeBodySchema,
+  postEmployeeDepartmentBodySchema
+} = require('../validation/joiRequestValidation');
 
 const router = express.Router();
 
@@ -8,21 +14,21 @@ const router = express.Router();
 router.get('/', empController.getAllEmployees);
 
 // GET => /employees/id
-router.get('/:emp_id', empController.getEmployee);
-
-// GET => /employees/id/departments
-router.get('/:emp_id/departments', empController.getEmployeeDepartments);
+router.get('/:id', validate(idParamsSchema), empController.getEmployee);
 
 // POST => /employees
-router.post('/', empController.postEmployees);
-
-// POST => /employees/id/departments
-router.post('/:emp_id/departments',empController.postEmployeeDepartment);
+router.post('/', validate(postEmployeeBodySchema), empController.postEmployee);
 
 // PUT => /employees/id
-router.put('/:emp_id', empController.editEmployee);
+router.put('/:id', validate(editEmployeeBodySchema), empController.editEmployee);
 
 // DELETE => /employees/id
-router.delete('/:emp_id', empController.deleteEmployee);
+router.delete('/:id', empController.deleteEmployee);
+
+// GET => /employees/id/departments
+router.get('/:id/departments', empController.getEmployeeDepartments);
+
+// POST => /employees/id/departments
+router.post('/:id/departments', validate(postEmployeeDepartmentBodySchema), empController.postEmployeeDepartment);
 
 module.exports = router;

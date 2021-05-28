@@ -3,11 +3,11 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
 const EmpDept = sequelize.define('employee_department', {
-    emp_id: {
+    empId: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    dept_id: {
+    deptId: {
         type: Sequelize.INTEGER,
         allowNull:false
     }

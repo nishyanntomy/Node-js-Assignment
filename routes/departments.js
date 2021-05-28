@@ -1,6 +1,10 @@
 const express = require('express');
-
-const depController = require('../controllers/departments');
+const validate = require('express-validation');
+const depController = require('../controller/departments');
+const {
+  postDepartmentBodySchema,
+  editDepartmentBodySchema
+} = require('../validation/joiRequestValidation');
 
 const router = express.Router();
 
@@ -8,15 +12,15 @@ const router = express.Router();
 router.get('/', depController.getAllDepartments);
 
 // GET => /departments/id
-router.get('/:dept_id',depController.getDepartment);
+router.get('/:id', depController.getDepartment);
 
 // POST => /departments
-router.post('/', depController.postDepartment);
+router.post('/', validate(postDepartmentBodySchema), depController.postDepartment);
 
 // PUT => /departments/id
-router.put('/:dept_id',depController.editDepartment);
+router.put('/:id', validate(editDepartmentBodySchema), depController.editDepartment);
 
 // DELETE => /departments/id
-router.delete('/:dept_id',depController.deleteDepartment);
+router.delete('/:id', depController.deleteDepartment);
 
 module.exports = router;
