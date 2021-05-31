@@ -1,6 +1,8 @@
+
 const express = require('express');
 const validate = require('express-validation');
 const empController = require('../controller/employees');
+const {authorize} = require("../middleware/authorization.middlware");
 const {
   idParamsSchema,
   postEmployeeBodySchema,
@@ -17,7 +19,7 @@ router.get('/', empController.getAllEmployees);
 router.get('/:id', validate(idParamsSchema), empController.getEmployee);
 
 // POST => /employees
-router.post('/', validate(postEmployeeBodySchema), empController.postEmployee);
+router.post('/', validate(postEmployeeBodySchema), authorize, empController.postEmployee);
 
 // PUT => /employees/id
 router.put('/:id', validate(editEmployeeBodySchema), empController.editEmployee);

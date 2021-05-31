@@ -1,5 +1,7 @@
 const Employee = require('../models/employees');
 const EmpDept = require('../models/employeeDepartment');
+const bcrypt = require('bcrypt');
+const loginConstants =  require('../constants/login.constants');
 
 exports.getAllEmployees = (req, resp, next) => {
     Employee.findAll()
@@ -54,9 +56,13 @@ exports.getEmployeeDepartments = (req, resp, next) => {
 exports.postEmployee = (req, resp, next) => {
     const name = req.body.name;
     const age = req.body.age;
+    const username = req.body.username;
+    const password = bcrypt.hashSync(req.body.password, loginConstants.salt);
     Employee.create({
         name: name,
-        age: age
+        age: age,
+        username,
+        password,
     }).then(employee => {
         resp.status(200).json({
             message: 'Employee created successfully',
