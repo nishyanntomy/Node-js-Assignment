@@ -1,13 +1,13 @@
-
 const express = require('express');
 const validate = require('express-validation');
 const empController = require('../controller/employees');
-const {authorize} = require("../middleware/authorization.middlware");
 const {
   idParamsSchema,
   postEmployeeBodySchema,
   editEmployeeBodySchema,
-  postEmployeeDepartmentBodySchema
+  postEmployeeDepartmentBodySchema,
+  postEmployeeRoleBodySchema,
+  postEmployeeAddressBodySchema
 } = require('../validation/joiRequestValidation');
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get('/', empController.getAllEmployees);
 router.get('/:id', validate(idParamsSchema), empController.getEmployee);
 
 // POST => /employees
-router.post('/', validate(postEmployeeBodySchema), authorize, empController.postEmployee);
+router.post('/', validate(postEmployeeBodySchema), empController.postEmployee);
 
 // PUT => /employees/id
 router.put('/:id', validate(editEmployeeBodySchema), empController.editEmployee);
@@ -33,4 +33,16 @@ router.get('/:id/departments', empController.getEmployeeDepartments);
 // POST => /employees/id/departments
 router.post('/:id/departments', validate(postEmployeeDepartmentBodySchema), empController.postEmployeeDepartment);
 
+// GET => /employees/id/roles
+router.get('/:id/roles', empController.getEmployeeRoles);
+
+// POST => /employees/id/roles
+router.post('/:id/roles', validate(postEmployeeRoleBodySchema), empController.postEmployeeRole);
+
+
+// GET => /employees/id/addresses
+router.get('/:id/address', empController.getEmployeeAddress);
+
+// POST => /employees/id/addresses
+router.post('/:id/address', validate(postEmployeeAddressBodySchema), empController.postEmployeeAddress);
 module.exports = router;
